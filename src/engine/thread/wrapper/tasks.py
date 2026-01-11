@@ -1,6 +1,8 @@
-import threading, time
-from threads.RoboMasterThread import RoboMasterThread
+import threading
+import time
 from socket import socket as SocketPeer
+
+from engine.thread.RoboMasterThread import RoboMasterThread
 
 
 class TaskQueue(threading.Thread):

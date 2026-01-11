@@ -1,6 +1,9 @@
-import threading, socket, time
-from RoboMasterThread import RoboMasterThread
+import socket
+import threading
+import time
 from typing import Callable
+
+from RoboMasterThread import RoboMasterThread
 
 
 class ReceiveMessaageThread(threading.Thread):

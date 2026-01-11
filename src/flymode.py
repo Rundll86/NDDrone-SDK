@@ -1,13 +1,11 @@
-from engine.core.configCore import Config
-from psychopy import event, visual, core
 import os
-import time, requests
-from engine.thread.RoboMasterThread import RoboMasterThread
+import time
+
+from psychopy import core, event
+
+from engine.core.configCore import Config
 from engine.thread.ReceiveMessageThread import ReceiveMessaageThread
-import socket
-from threading import Thread
-from engine.thread.wrapper.tasks import TaskQueue
-from typing import Callable
+from engine.thread.RoboMasterThread import RoboMasterThread
 from engine.util.connection import connectSocket
 from engine.util.workdir import fromInternal
 from engine.window.monitor import MonitorWindow
@@ -63,7 +61,7 @@ def main():
                 stopFlag = True
                 # 按了esc退出，先关窗口
                 win.close()
-                # 发降落，3秒后起桨降温
+                # 给无人机发降落，3秒后起桨降温
                 drone.send("land")
                 time.sleep(3)
                 drone.send("motoron")

@@ -1,6 +1,6 @@
+import socket
 import threading
 import time
-import socket
 from datetime import datetime
 from threading import Thread
 from typing import Callable

@@ -1,5 +1,7 @@
-from psychopy import event, visual, core
-import os, time
+import os
+import time
+
+from psychopy import core, event, visual
 
 
 class MonitorWindow(visual.Window):
