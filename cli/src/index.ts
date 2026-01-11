@@ -5,11 +5,13 @@ import { copyDirectory } from "./util";
 import chokidar from "chokidar";
 import process from "process";
 import childProcess from "child_process";
-import fs from 'fs/promises';
 
 async function build(config: ConfigData) {
-    await copyDirectory(path.resolve("src"), config.runtime.path);
-    await fs.rename(path.resolve(config.runtime.path, "flymode.py"), path.resolve(config.runtime.path, "Drone_psycho.py"));
+    await copyDirectory(
+        path.resolve("src"),
+        config.runtime.path,
+        (src, dest) => path.basename(src) === "flymode.py" ? path.join(path.dirname(dest), "Drone_psycho.py") : dest
+    );
 }
 async function main() {
     const config = await loadConfig();
@@ -23,13 +25,14 @@ async function main() {
         .action(async (options: { watch: boolean, generate: boolean }) => {
             if (options.watch) {
                 const watcher = chokidar.watch(path.resolve("src"));
-                watcher.on("change", () => build(config));
-                watcher.on("add", () => build(config));
-                watcher.on("unlink", () => build(config));
+                for (const event of ["change", "add", "unlink"] as const) {
+                    watcher.on(event, () => build(config));
+                }
                 watcher.on("ready", () => process.stdout.write("正在视奸工作区..."));
             } else {
+                console.log("正在编译工作区...");
                 await build(config);
-                process.stdout.write("工作区编译完成\n");
+                console.log("工作区编译完成");
             }
             if (options.generate) {
                 console.log("正在编译刺激块...");
@@ -40,7 +43,10 @@ async function main() {
         .action(async () => {
             try {
                 childProcess.execSync("python cli/generator/generate.py", { stdio: "inherit" });
-            } catch { }
+                console.log("刺激块编译完成");
+            } catch {
+                console.error("刺激块编译失败");
+            }
         });
 
     program.parse(process.argv);
