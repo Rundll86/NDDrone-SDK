@@ -4,7 +4,7 @@ import path from "path";
 import { copyDirectory } from "./util";
 import chokidar from "chokidar";
 import process from "process";
-import { Jimp } from "jimp";
+import childProcess from "child_process";
 
 async function main() {
     const config = await loadConfig();
@@ -14,7 +14,8 @@ async function main() {
 
     program.command("build")
         .option("-w, --watch", "是否开启视奸模式", false)
-        .action(async (options: { watch: boolean }) => {
+        .option("-g, --generate", "是否编译刺激块", false)
+        .action(async (options: { watch: boolean, generate: boolean }) => {
             if (options.watch) {
                 const watcher = chokidar.watch(path.resolve("src"));
                 watcher.on("change", async () => {
@@ -29,14 +30,19 @@ async function main() {
                 watcher.on("ready", () => process.stdout.write("正在视奸工作区..."));
             } else {
                 await copyDirectory(path.resolve("src"), config.runtime.path);
-                process.stdout.write("编译成功\n");
+                process.stdout.write("工作区编译完成\n");
+            }
+            if (options.generate) {
+                console.log("正在编译刺激块...");
+                program.parseAsync(["generate"], { from: "user" });
             }
         });
     program.command("generate")
         .action(async () => {
-            // const image = await Jimp.read("blocks");
-            console.log(config);
-        })
+            try {
+                childProcess.execSync("python cli/generator/generate.py", { stdio: "inherit" });
+            } catch { }
+        });
 
     program.parse(process.argv);
 }

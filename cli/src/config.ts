@@ -1,6 +1,7 @@
 import { parse } from "ini";
 import fs from "fs/promises";
 import { isExist, isFile } from "./util";
+import path from "path";
 
 export async function loadConfig(): Promise<ConfigData> {
     const configText = await fs.readFile("config.ini", "utf-8");
@@ -14,14 +15,19 @@ export async function loadConfig(): Promise<ConfigData> {
         console.error("frames.count选项必须为数字");
         process.exit(1);
     }
-    if (!await isExist(result.runtime.path)) {
-        console.log("runtime.path不存在");
-        process.exit(1);
+    if (result.build.debug) {
+        result.runtime.path = "dist";
+    } else {
+        if (!await isExist(result.runtime.path)) {
+            console.log("runtime.path不存在");
+            process.exit(1);
+        }
+        if (await isFile(result.runtime.path)) {
+            console.log("runtime.path必须为目录");
+            process.exit(1);
+        }
     }
-    if (await isFile(result.runtime.path)) {
-        console.log("runtime.path必须为目录");
-        process.exit(1);
-    }
+    result.runtime.path = path.resolve(result.runtime.path, "_internal");
     return result;
 }
 export interface ConfigData {

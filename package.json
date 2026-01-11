@@ -16,7 +16,6 @@
     "dependencies": {
         "chokidar": "^5.0.0",
         "commander": "^14.0.2",
-        "ini": "^6.0.0",
-        "jimp": "^1.6.0"
+        "ini": "^6.0.0"
     }
 }
