@@ -1,6 +1,5 @@
 import threading
 import time
-from socket import socket as SocketPeer
 
 from engine.thread.RoboMasterThread import RoboMasterThread
 

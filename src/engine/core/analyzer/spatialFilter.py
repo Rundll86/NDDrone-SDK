@@ -1,5 +1,4 @@
 import numpy as np
-import scipy.linalg as la
 from scipy import signal
 from sklearn.cross_decomposition import CCA
 from sklearn.metrics import accuracy_score
