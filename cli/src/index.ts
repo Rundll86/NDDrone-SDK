@@ -4,6 +4,7 @@ import path from "path";
 import { copyDirectory } from "./util";
 import chokidar from "chokidar";
 import process from "process";
+import { Jimp } from "jimp";
 
 async function main() {
     const config = await loadConfig();
@@ -12,7 +13,7 @@ async function main() {
         .version("1.0.0");
 
     program.command("build")
-        .option("-w, --watch", undefined, false)
+        .option("-w, --watch", "是否开启视奸模式", false)
         .action(async (options: { watch: boolean }) => {
             if (options.watch) {
                 const watcher = chokidar.watch(path.resolve("src"));
@@ -31,6 +32,11 @@ async function main() {
                 process.stdout.write("编译成功\n");
             }
         });
+    program.command("generate")
+        .action(async () => {
+            // const image = await Jimp.read("blocks");
+            console.log(config);
+        })
 
     program.parse(process.argv);
 }

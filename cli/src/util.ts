@@ -14,3 +14,15 @@ export async function copyDirectory(src: string, dest: string) {
         }
     }
 }
+export async function isExist(path: string) {
+    try {
+        await fs.access(path);
+        return true;
+    } catch (error) {
+        return false;
+    }
+}
+export async function isFile(path: string) {
+    const stats = await fs.stat(path);
+    return stats.isFile();
+}
