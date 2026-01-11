@@ -1,0 +1,21 @@
+{
+    "name": "nddrone-sdk",
+    "version": "1.0.0",
+    "repository": "https://github.com/Rundll86/NDDrone-SDK.git",
+    "author": "陨落基围虾 <3161880837@qq.com>",
+    "license": "MIT",
+    "scripts": {
+        "build": "tsc",
+        "dev": "tsc --watch"
+    },
+    "devDependencies": {
+        "@types/ini": "^4.1.1",
+        "@types/node": "^25.0.6",
+        "typescript": "^5.9.3"
+    },
+    "dependencies": {
+        "chokidar": "^5.0.0",
+        "commander": "^14.0.2",
+        "ini": "^6.0.0"
+    }
+}
