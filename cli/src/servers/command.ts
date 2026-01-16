@@ -1,10 +1,11 @@
 import { DroneServer } from "../connection";
+import { DRONE_ADDRESS } from "../constants";
 
 export class CommandServer extends DroneServer {
     constructor() {
-        super("udp4", ["192.168.10.1", 8889]);
+        super("udp4", DRONE_ADDRESS);
     }
     receive(message: string): void {
-        console.log(message);
+        console.log(`Drone: ${message}`);
     }
 }

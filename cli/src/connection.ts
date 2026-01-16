@@ -1,11 +1,14 @@
 import dgram from "dgram";
 import { Address } from "./constants";
 
+export interface Oncable extends DroneServer {
+    doOnce(): Promise<void>;
+}
 export abstract class DroneServer {
     socket: dgram.Socket;
     remoteAddress?: Address;
     selfAddress?: Address;
-    constructor(type: "udp4" | "udp6", remoteAddress?: Address, selfAddress?: Address) {
+    constructor(type: dgram.SocketType, remoteAddress?: Address, selfAddress?: Address) {
         this.socket = dgram.createSocket(type);
         this.remoteAddress = remoteAddress;
         this.selfAddress = selfAddress;

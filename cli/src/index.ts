@@ -7,6 +7,8 @@ import process from "process";
 import childProcess from "child_process";
 import packageData from "../../package.json";
 import { CommandServer } from "./servers/command";
+import { DroneStateServer } from "./servers/droneState";
+import { PingServer } from "./servers/ping";
 
 async function build(config: ConfigData) {
     await copyDirectory(
@@ -22,7 +24,7 @@ async function main() {
         .version(packageData.version);
 
     program.command("build")
-        .option("-w, --watch", "是否开启视奸模式", false)
+        .option("-w, --watch", "是否持续视奸工作区", false)
         .option("-g, --generate", "是否编译刺激块", false)
         .action(async (options: { watch: boolean, generate: boolean }) => {
             if (options.watch) {
@@ -50,30 +52,17 @@ async function main() {
                 console.error("刺激块编译失败");
             }
         });
-
     program.command("command")
         .action(async () => {
             console.log("--- NDDrone-SDK 无人机交互终端 ---");
             process.stdout.write("正在连接无人机...");
             const commandServer = new CommandServer();
-            commandServer.send("command");
-            try {
-                const response = await commandServer.waitMessage(5000);
-                if (response !== "ok") {
-                    throw new Error("响应无效");
-                }
-            } catch (err) {
-                if (err instanceof Error) {
-                    console.error(`连接失败：${err.message}，请确保无人机已开启并连接至局域网。`);
-                } else {
-                    console.error("发生未知错误。");
-                };
-            }
+            const pingServer = new PingServer();
+            await pingServer.doOnce();
             console.log("连接成功。");
             while (true) {
                 try {
-                    const cmd = await input("> ");
-                    console.log(cmd);
+                    commandServer.send(await input("> "));
                 } catch (err) {
                     if (err instanceof Error) {
                         if (err.message.startsWith("Aborted")) {
@@ -83,6 +72,11 @@ async function main() {
                     }
                 }
             }
+        });
+    program.command("state")
+        .option("-w, --watch", "是否持续视奸无人机状态", false)
+        .action(async (options: { watch: boolean }) => {
+            const droneState = new DroneStateServer();
         });
 
     program.parse(process.argv);
