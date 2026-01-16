@@ -1,6 +1,5 @@
 import path from "path";
 import fs from "fs/promises";
-import EventEmitter from "events";
 import readline from "readline/promises";
 
 export async function copyDirectory(src: string, dest: string, mapFile?: (srcPath: string, destPath: string) => string) {
@@ -21,7 +20,7 @@ export async function isExist(path: string) {
     try {
         await fs.access(path);
         return true;
-    } catch (error) {
+    } catch {
         return false;
     }
 }

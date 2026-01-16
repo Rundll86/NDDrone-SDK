@@ -1,6 +1,5 @@
 import dgram from "dgram";
 import { Address } from "./constants";
-import { error } from "console";
 
 export abstract class DroneServer {
     socket: dgram.Socket;

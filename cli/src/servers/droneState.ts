@@ -1,4 +1,3 @@
-import { RemoteInfo, Socket } from "node:dgram";
 import { DroneServer } from "../connection";
 
 export interface DroneState {

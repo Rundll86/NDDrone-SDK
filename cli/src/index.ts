@@ -66,7 +66,7 @@ async function main() {
                 if (err instanceof Error) {
                     console.error(`连接失败：${err.message}，请确保无人机已开启并连接至局域网。`);
                 } else {
-                    console.error("发生未知错误。")
+                    console.error("发生未知错误。");
                 };
             }
             console.log("连接成功。");
