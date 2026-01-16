@@ -47,7 +47,7 @@ export const keyMap: Record<string, string> = {
     agx: "X轴加速度",
     agy: "Y轴加速度",
     agz: "Z轴加速度",
-}
+};
 export class DroneStateServer extends DroneServer implements Initializable {
     current: DroneState | null = null;
     constructor() {
@@ -66,7 +66,7 @@ export class DroneStateServer extends DroneServer implements Initializable {
         this.current = state as unknown as DroneState;
     }
     toString() {
-        return Object.entries(this.current ?? {}).map(([key, value]: [string, number]) => `${keyMap[key]}：${value}`).join(",\n")
+        return Object.entries(this.current ?? {}).map(([key, value]: [string, number]) => `${keyMap[key]}：${value}`).join(",\n");
     }
     async initialize(): Promise<void> {
         await this.polling((stop) => this.current && stop(), 500);
