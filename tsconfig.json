@@ -10,7 +10,8 @@
         "outDir": "cli/dist",
         "types": [
             "node"
-        ]
+        ],
+        "resolveJsonModule": true
     },
     "include": [
         "cli/src/**/*"
