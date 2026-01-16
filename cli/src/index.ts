@@ -77,8 +77,16 @@ async function main() {
         .option("-w, --watch", "是否持续视奸无人机状态", false)
         .action(async (options: { watch: boolean }) => {
             const droneState = new DroneStateServer();
+            await droneState.initialize();
+            do {
+                console.log(droneState.toString());
+            } while (options.watch);
         });
 
     program.parse(process.argv);
 }
 main();
+
+new CommandServer();
+new PingServer();
+new DroneStateServer();

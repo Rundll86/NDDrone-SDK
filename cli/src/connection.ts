@@ -4,10 +4,15 @@ import { Address } from "./constants";
 export interface Oncable extends DroneServer {
     doOnce(): Promise<void>;
 }
+export interface Initializable extends DroneServer {
+    initialize(): Promise<void>;
+}
 export abstract class DroneServer {
     socket: dgram.Socket;
     remoteAddress?: Address;
     selfAddress?: Address;
+
+    lastReceiveTime: number = 0;
     constructor(type: dgram.SocketType, remoteAddress?: Address, selfAddress?: Address) {
         this.socket = dgram.createSocket(type);
         this.remoteAddress = remoteAddress;
@@ -17,6 +22,7 @@ export abstract class DroneServer {
             this.socket.bind(port, host);
         }
         this.socket.on("message", (msg, rinfo) => {
+            this.lastReceiveTime = Date.now();
             this.receive(msg.toString(), rinfo);
         });
     }
@@ -49,6 +55,23 @@ export abstract class DroneServer {
                 clearTimeout(timer);
                 if (!timeouted) resolve(message.toString());
             });
+        });
+    }
+    protected async polling<T>(callback: (
+        stop: (result?: T) => void,
+        round: number,
+        runningTime: number
+    ) => void, interval: number): Promise<T | undefined> {
+        return new Promise((resolve) => {
+            let round = 0;
+            const startTime = Date.now();
+            const timer = setInterval(
+                () => callback((result) => {
+                    clearInterval(timer);
+                    resolve(result);
+                }, round++, Date.now() - startTime),
+                interval
+            );
         });
     }
 }
