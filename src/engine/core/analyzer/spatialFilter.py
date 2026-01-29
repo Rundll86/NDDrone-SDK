@@ -4,7 +4,7 @@ from sklearn.cross_decomposition import CCA
 from sklearn.metrics import accuracy_score
 
 
-class fbCCA:
+class AnalyzerFBCCA:
     def __init__(
         self, n_components=1, n_band=3, srate=250, frequency=[], lag=35, winLEN=2
     ):
