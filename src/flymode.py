@@ -55,11 +55,10 @@ def main():
         currentTime = int(time.time() * 1000)
         neuroApiSocket.send(f"TIME:{currentTime}".encode("utf8"))
         # 开始闪烁
-        win.flicker(currentTime)
+        win.flicker()
         while True:
             keys = event.getKeys()
             if "escape" in keys:
-                print("ESC pressed, exiting...")
                 stopFlag = True
                 # 按了esc退出，先关窗口
                 win.close()

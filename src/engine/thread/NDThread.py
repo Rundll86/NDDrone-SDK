@@ -6,6 +6,7 @@ from scipy.signal import resample
 
 from engine.core.wheelCore import Decoder
 from engine.util.connection import connectSocket
+from flymode import mainLogger
 
 
 class NDThread(threading.Thread):
@@ -43,7 +44,6 @@ class NDThread(threading.Thread):
         self._is_running = False
         self.join()
         self.sock.close()
-        print("Data server disconnected")
 
     def run(self):
         while self._is_running:
@@ -57,7 +57,7 @@ class NDThread(threading.Thread):
                 if res["timestamp"] == 0:
                     continue
             except Exception as e:
-                print("res timestamp error:" + str(e))
+                mainLogger.error(e)
             self.eeg_datas.append(res)
             if len(self.eeg_datas) > self.list_length:
                 self.eeg_datas.pop(0)
@@ -89,7 +89,7 @@ class NDThread(threading.Thread):
                 (start_millis_second - eeg_packet_start_millis) * point_per_millis
             )
             if eeg_start_position < 0:
-                print("eeg time error:{0}".format(eeg_start_position))
+                mainLogger.error("eeg time error:{0}".format(eeg_start_position))
                 eeg_start_position = 0
             eeg_tmp = []
             eeg_data_length = 0
@@ -107,15 +107,11 @@ class NDThread(threading.Thread):
                 eeg_data = eeg_data[
                     :, eeg_start_position : (eeg_start_position + need_points)
                 ]
-                print(
-                    "eeg start points:{0},needPoints:{1},start_millis_second:{2},eeg_packet_millis:{3},eeg_data_shape:{4}".format(
-                        eeg_start_position,
-                        need_points,
-                        start_millis_second,
-                        eeg_packet_start_millis,
-                        eeg_data.shape,
-                    )
-                )
+                mainLogger.info(f"eeg start points: {eeg_start_position}")
+                mainLogger.info(f"need points: {need_points}")
+                mainLogger.info(f"start millis second: {start_millis_second}")
+                mainLogger.info(f"eeg packet millis: {eeg_packet_start_millis}")
+                mainLogger.info(f"eeg data shape: {eeg_data.shape}")
                 break
         return eeg_data
 

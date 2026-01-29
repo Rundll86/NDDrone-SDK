@@ -39,8 +39,8 @@ class Logger:
     def warning(self, message: str):
         self.log(MessageType.WARNING, message)
 
-    def error(self, message: str):
-        self.log(MessageType.ERROR, message)
+    def error(self, message: str | Exception):
+        self.log(MessageType.ERROR, str(message))
 
 
 mainLogger = Logger()

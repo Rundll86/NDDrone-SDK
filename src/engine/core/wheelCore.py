@@ -1,5 +1,7 @@
 import struct
 
+from flymode import mainLogger
+
 
 class Constant:
     stx = 0x02
@@ -379,7 +381,6 @@ class Encoder:
         datas.append(crc_bytes[2])
         datas.append(crc_bytes[1])
         datas.append(crc_bytes[0])
-        print(datas)
         datas = bytes(datas)
         return datas
 
@@ -556,9 +557,6 @@ class Decoder:
                             point_count_per_channel_bytes, byteorder="big", signed=True
                         )
                         payload_index = 2 + payload_index
-                        # print("timestamp:{0}".format(timestamp))
-                        # print("channel_count:{0},point_count_per_channel:{1}".format(channel_count,
-                        #                                                              point_count_per_channel))
                         datas = []
                         for i in range(channel_count):
                             ch_bytes = self.__payload[
@@ -572,13 +570,13 @@ class Decoder:
                         res["data"] = datas
                         res["model"] = model
                     else:
-                        print("crc error")
+                        mainLogger.error("crc error")
                     self.clear()
                 else:
                     self.clear()
             except Exception as e:
                 self.clear()
-                print("error:{0}".format(e))
+                mainLogger.error(e)
                 return res
         return res
 
@@ -722,11 +720,8 @@ class Decoder:
                             point_count_per_channel_bytes, byteorder="big", signed=True
                         )
                         payload_index = 2 + payload_index
-                        # print("timestamp:{0}".format(timestamp))
-                        print(
-                            "channel_count:{0},point_count_per_channel:{1}".format(
-                                channel_count, point_count_per_channel
-                            )
+                        mainLogger.info(
+                            f"channel count:{channel_count}, point count per channel:{point_count_per_channel}"
                         )
                         datas = []
                         for i in range(channel_count):
@@ -741,13 +736,13 @@ class Decoder:
                         res["data"] = datas
                         res["model"] = model
                     else:
-                        print("crc error")
+                        mainLogger.error("crc error")
                     self.clear()
                 else:
                     self.clear()
             except Exception as e:
                 self.clear()
-                print("error:{0}".format(e))
+                mainLogger.error(e)
         return res
 
     def points_by_4bytes(self, datas):

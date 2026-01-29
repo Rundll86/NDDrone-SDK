@@ -72,17 +72,12 @@ class MonitorWindow(visual.Window):
         self.backgroundStim = self.coverImage(backgroundPath, False)
         self.promptStim = self.coverImage(promptPath, False)
 
-    def flicker(self, currentTime: int):
-        startTime = core.getTime()
-        print(f"Current time: {currentTime}")
+    def flicker(self):
         for frame in self.frames:
             # 画背景图和当前帧，并且等待垂直同步渲染一帧
             self.backgroundStim.draw()
             frame.draw()
             self.flip()
-        endTime = core.getTime()
-        print(f"STI ended: {endTime - startTime}")
-        print(time.time())
         # 闪烁完了，展示提示帧
         self.prompt()
 
