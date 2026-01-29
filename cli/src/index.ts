@@ -10,39 +10,12 @@ import { CommandServer } from "./servers/command";
 import { DroneStateServer } from "./servers/droneState";
 import { PingServer } from "./servers/ping";
 
-async function build(config: ConfigData) {
-    await copyDirectory(
-        path.resolve("src"),
-        config.runtime.path,
-        (src, dest) => path.basename(src) === "flymode.py" ? path.join(path.dirname(dest), "Drone_psycho.py") : dest
-    );
-}
 async function main() {
     const config = await loadConfig();
     program
         .name(packageData.name)
         .version(packageData.version);
 
-    program.command("build")
-        .option("-w, --watch", "是否持续视奸工作区", false)
-        .option("-g, --generate", "是否编译刺激块", false)
-        .action(async (options: { watch: boolean, generate: boolean }) => {
-            if (options.watch) {
-                const watcher = chokidar.watch(path.resolve("src"));
-                for (const event of ["change", "add", "unlink"] as const) {
-                    watcher.on(event, () => build(config));
-                }
-                watcher.on("ready", () => process.stdout.write("正在视奸工作区..."));
-            } else {
-                console.log("正在编译工作区...");
-                await build(config);
-                console.log("工作区编译完成");
-            }
-            if (options.generate) {
-                console.log("正在编译刺激块...");
-                program.parseAsync(["generate"], { from: "user" });
-            }
-        });
     program.command("generate")
         .action(async () => {
             try {
@@ -86,7 +59,3 @@ async function main() {
     program.parse(process.argv);
 }
 main();
-
-new CommandServer();
-new PingServer();
-new DroneStateServer();
