@@ -3,7 +3,7 @@ import threading
 import time
 from typing import Callable
 
-from RoboMasterThread import RoboMasterThread
+from engine.thread.RoboMasterThread import RoboMasterThread
 
 
 class ReceiveMessaageThread(threading.Thread):

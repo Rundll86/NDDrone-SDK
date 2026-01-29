@@ -9,7 +9,7 @@ def connectSocket(address: tuple[str, int], retryTimes: int) -> socket.socket:
         try:
             result.connect(address)
             notconnect = False
-        except:
+        except Exception:
             reconnecttime += 1
             if reconnecttime > retryTimes:
                 raise ValueError(f"Cannot connect to {address}.")

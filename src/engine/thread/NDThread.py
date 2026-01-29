@@ -1,4 +1,3 @@
-import socket
 import threading
 
 import numpy as np
@@ -6,6 +5,7 @@ from scipy import signal
 from scipy.signal import resample
 
 from engine.core.wheelCore import Decoder
+from engine.util.connection import connectSocket
 
 
 class NDThread(threading.Thread):
@@ -37,19 +37,7 @@ class NDThread(threading.Thread):
             raise ValueError("No butter received.")
 
     def connect(self):
-        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        notconnect = True
-        reconnecttime = 0
-        while notconnect:
-            try:
-                self.sock.connect(self.deviceAddress)
-                notconnect = False
-                print("Data server connected.")
-            except:
-                reconnecttime += 1
-                if reconnecttime > 5:
-                    break
-        return notconnect
+        self.sock = connectSocket(self.deviceAddress, 5)
 
     def disconnect(self):
         self._is_running = False

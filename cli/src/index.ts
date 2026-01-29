@@ -1,8 +1,5 @@
 import { program } from "commander";
-import { ConfigData, loadConfig } from "./config";
-import path from "path";
-import { copyDirectory, input } from "./util";
-import chokidar from "chokidar";
+import { input } from "./util";
 import process from "process";
 import childProcess from "child_process";
 import packageData from "../../package.json";
@@ -11,11 +8,14 @@ import { DroneStateServer } from "./servers/droneState";
 import { PingServer } from "./servers/ping";
 
 async function main() {
-    const config = await loadConfig();
     program
         .name(packageData.name)
         .version(packageData.version);
 
+    program.command("start")
+        .action(() => {
+            childProcess.spawnSync("python src/flymode.py", { stdio: "inherit" });
+        });
     program.command("generate")
         .action(async () => {
             try {

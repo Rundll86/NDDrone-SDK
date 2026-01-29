@@ -1,11 +1,7 @@
-import os
-
 import numpy as np
 
 
 class Config:
-    distance: int = 0
-
     def __init__(self) -> None:
         self.defaultConfig()
 
@@ -35,16 +31,7 @@ class Config:
         self.lag = lag
         self.frequency = frequency
         self.distance = 0
-        path = os.path.join(os.getcwd(), "readme.txt")
-        with open(path, "r", encoding="utf-8") as file:
-            lines = file.readlines()
-        for line in lines:
-            try:
-                if line[:8] == "distance":
-                    self.distance = int(line[10:])
-            except:
-                pass
-        if self.distance is 0:
+        if self.distance == 0:
             self.distance = distance
 
     def connectINFO(

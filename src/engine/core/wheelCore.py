@@ -4,7 +4,6 @@ import struct
 class Constant:
     stx = 0x02
     etx = 0x03
-    # wheel server: magic number
     magic_0 = 0x4E
     magic_1 = 0x44
 
@@ -13,7 +12,6 @@ queue_length = 10
 
 
 class NeuroDanceQueue:
-
     def __init__(self):
         self.buffer = [None] * queue_length
         self.buf_length = queue_length
@@ -351,7 +349,6 @@ class Crc32:
 
 
 class Encoder:
-
     constant = Constant
 
     def req_data(self):

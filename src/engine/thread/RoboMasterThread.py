@@ -7,7 +7,6 @@ from typing import Callable
 
 
 class RoboMasterThread(Thread):
-
     _roboAddress: tuple[str, int]
     _sock: socket.socket
     _get_info_last_time = datetime.now()

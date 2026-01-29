@@ -8,7 +8,6 @@ class fbCCA:
     def __init__(
         self, n_components=1, n_band=3, srate=250, frequency=[], lag=35, winLEN=2
     ):
-
         self.n_components = n_components
         self.n_band = n_band
         self.srate = srate
@@ -22,7 +21,6 @@ class fbCCA:
         self.winLEN = int(self.srate * winLEN)
 
     def fit(self):
-
         epochLEN = self.winLEN
         sineRef = self.get_reference(
             self.srate, self.frequncy_info, n_harmonics=3, data_len=epochLEN
@@ -32,7 +30,6 @@ class fbCCA:
         return self
 
     def predict(self, X):
-
         if len(X.shape) < 3:
             X = np.expand_dims(X, axis=0)
 
@@ -42,7 +39,6 @@ class fbCCA:
         fb_coefs = np.expand_dims(np.arange(1, self.n_band + 1) ** -1.25 + 0.25, axis=0)
 
         for epochINX, epoch in enumerate(X):
-
             r = np.zeros((self.n_band, self.conditionNUM))
             cca = CCA(n_components=1)
             for fbINX in range(self.n_band):
@@ -58,7 +54,6 @@ class fbCCA:
         return np.stack(result)
 
     def filterbank(self, x, srate, freqInx):
-
         passband = [6, 14, 22, 30, 38, 46, 54, 62, 70, 78]
         stopband = [4, 10, 16, 24, 32, 40, 48, 56, 64, 72]
 
@@ -88,7 +83,6 @@ class fbCCA:
             raise ValueError("No cheby received.")
 
     def get_reference(self, srate, frequncy_info, n_harmonics, data_len):
-
         t = np.arange(0, (data_len / srate), 1 / srate)
         reference = []
 
@@ -107,7 +101,6 @@ class fbCCA:
         return reference
 
     def score(self, X, y):
-
         return accuracy_score(y, self.predict(X))
 
 
