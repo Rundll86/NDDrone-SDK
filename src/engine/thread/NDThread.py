@@ -4,9 +4,9 @@ import numpy as np
 from scipy import signal
 from scipy.signal import resample
 
+from engine.api.logging import loggerMain
 from engine.core.wheelCore import Decoder
 from engine.util.connection import connectSocket
-from flymode import loggerMain
 
 
 class NDThread(threading.Thread):

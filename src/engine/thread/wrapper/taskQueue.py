@@ -1,8 +1,8 @@
 import threading
 import time
 
+from engine.api.logging import loggerMain
 from engine.thread.RoboMasterThread import RoboMasterThread
-from flymode import loggerMain
 
 
 class TaskQueue(threading.Thread):

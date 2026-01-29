@@ -1,5 +1,7 @@
 from socket import AddressFamily, SocketKind, socket
 
+from engine.api.logging import loggerMain
+
 
 def connectSocket(
     address: tuple[str, int],
@@ -17,5 +19,6 @@ def connectSocket(
         except Exception:
             reconnectedTimes += 1
             if reconnectedTimes > retryTimes:
-                raise ValueError(f"Cannot connect to {address}.")
+                loggerMain.warning(f"Cannot connect to {address}.")
+                break
     return resultSocket
