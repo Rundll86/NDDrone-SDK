@@ -2,7 +2,7 @@ import threading
 import time
 
 from engine.thread.RoboMasterThread import RoboMasterThread
-from flymode import mainLogger
+from flymode import loggerMain
 
 
 class TaskQueue(threading.Thread):
@@ -40,7 +40,7 @@ class TaskQueue(threading.Thread):
                 self.next()
             response = self.getMsg()
             if response:
-                mainLogger.info(f"task queue recv: {repr(response)}")
+                loggerMain.info(f"task queue recv: {repr(response)}")
                 while self.paused:
                     time.sleep(0.1)
                 if response == "ok":
@@ -56,7 +56,7 @@ class TaskQueue(threading.Thread):
     def next(self):
         if len(self.stack) > 0:
             action = self.stack.pop(0)
-            mainLogger.info(f"task queue sent msg: {action}")
+            loggerMain.info(f"task queue sent msg: {action}")
             self.drone._sock.sendto(action.encode("utf8"), self.drone._roboAddress)
             self.setAction(action)
             self.currentState = True
@@ -66,4 +66,4 @@ class TaskQueue(threading.Thread):
     def restore(self):
         self.currentState = not self.currentState
         self.stack.insert(0, self.lastAction)
-        mainLogger.info("restore")
+        loggerMain.info("restore")

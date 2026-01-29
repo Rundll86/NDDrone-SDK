@@ -11,9 +11,20 @@ class LogRecord(BaseModel):
     type: MessageType
     message: str
     time: datetime.datetime
+    moduleName: str
 
-    def __init__(self, type: MessageType = MessageType.INFO, message: str = ""):
-        super().__init__(type=type, message=message, time=datetime.datetime.now())
+    def __init__(
+        self,
+        type: MessageType = MessageType.INFO,
+        message: str = "",
+        moduleName: str = "main",
+    ):
+        super().__init__(
+            type=type,
+            message=message,
+            time=datetime.datetime.now(),
+            moduleName=moduleName,
+        )
 
     def print(self):
         color = MESSAGETYPE_COLOR_MAP[self.type]
@@ -24,12 +35,14 @@ class LogRecord(BaseModel):
 
 class Logger:
     records: list[LogRecord]
+    moduleName: str
 
-    def __init__(self) -> None:
+    def __init__(self, moduleName: str) -> None:
         self.records = []
+        self.moduleName = moduleName
 
     def log(self, type: MessageType, message: str):
-        record = LogRecord(type, message)
+        record = LogRecord(type, message, self.moduleName)
         self.records.append(record)
         record.print()
 
@@ -43,4 +56,4 @@ class Logger:
         self.log(MessageType.ERROR, str(message))
 
 
-mainLogger = Logger()
+loggerMain = Logger("main")

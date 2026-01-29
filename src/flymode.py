@@ -3,7 +3,7 @@ import time
 
 from psychopy import core, event
 
-from engine.api.logging import mainLogger
+from engine.api.logging import loggerMain
 from engine.core.configCore import Config
 from engine.thread.ReceiveMessageThread import ReceiveMessaageThread
 from engine.thread.RoboMasterThread import RoboMasterThread
@@ -13,7 +13,7 @@ from engine.window.monitor import MonitorWindow
 
 
 def main():
-    mainLogger.info("loading")
+    loggerMain.info("loading")
     config = Config()
 
     # 配置一些路径常量

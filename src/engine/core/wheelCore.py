@@ -1,6 +1,6 @@
 import struct
 
-from flymode import mainLogger
+from flymode import loggerMain
 
 
 class Constant:
@@ -570,13 +570,13 @@ class Decoder:
                         res["data"] = datas
                         res["model"] = model
                     else:
-                        mainLogger.error("crc error")
+                        loggerMain.error("crc error")
                     self.clear()
                 else:
                     self.clear()
             except Exception as e:
                 self.clear()
-                mainLogger.error(e)
+                loggerMain.error(e)
                 return res
         return res
 
@@ -720,7 +720,7 @@ class Decoder:
                             point_count_per_channel_bytes, byteorder="big", signed=True
                         )
                         payload_index = 2 + payload_index
-                        mainLogger.info(
+                        loggerMain.info(
                             f"channel count:{channel_count}, point count per channel:{point_count_per_channel}"
                         )
                         datas = []
@@ -736,13 +736,13 @@ class Decoder:
                         res["data"] = datas
                         res["model"] = model
                     else:
-                        mainLogger.error("crc error")
+                        loggerMain.error("crc error")
                     self.clear()
                 else:
                     self.clear()
             except Exception as e:
                 self.clear()
-                mainLogger.error(e)
+                loggerMain.error(e)
         return res
 
     def points_by_4bytes(self, datas):

@@ -5,7 +5,7 @@ from datetime import datetime
 from threading import Thread
 from typing import Callable
 
-from flymode import mainLogger
+from flymode import loggerMain
 
 
 class RoboMasterThread(Thread):
@@ -28,26 +28,26 @@ class RoboMasterThread(Thread):
                 response, ip = self._sock.recvfrom(128)
                 response = response.decode(encoding="utf-8")
                 if response == "ok" or response == "error":
-                    mainLogger.info("RoboMaster Received  message: " + response)
+                    loggerMain.info("RoboMaster Received  message: " + response)
                 else:
-                    mainLogger.info("Received message: " + response)
+                    loggerMain.info("Received message: " + response)
                 self.recb(response)
                 time.sleep(0.01)
             except Exception as e:
-                mainLogger.error(e)
+                loggerMain.error(e)
                 time.sleep(1)
 
     def send(self, message: str):
         try:
-            mainLogger.info("Send message: " + message)
+            loggerMain.info("Send message: " + message)
             self._sock.sendto(message.encode(encoding="utf-8"), self._roboAddress)
         except Exception as e:
-            mainLogger.error("RoboMaster Error sending: " + str(e))
+            loggerMain.error("RoboMaster Error sending: " + str(e))
 
     def close(self):
         self._is_running = False
         self._sock.close()
-        mainLogger.info("Drone disconnected.")
+        loggerMain.info("Drone disconnected.")
 
     def requestDroneState(self):
         now = datetime.now()
