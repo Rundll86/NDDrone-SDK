@@ -1,16 +1,21 @@
-import socket
+from socket import AddressFamily, SocketKind, socket
 
 
-def connectSocket(address: tuple[str, int], retryTimes: int) -> socket.socket:
-    result = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    notconnect = True
-    reconnecttime = 0
-    while notconnect:
+def connectSocket(
+    address: tuple[str, int],
+    retryTimes: int,
+    af: AddressFamily = AddressFamily.AF_INET,
+    type: SocketKind = SocketKind.SOCK_STREAM,
+) -> socket:
+    resultSocket = socket(af, type)
+    connected = False
+    reconnectedTimes = 0
+    while not connected:
         try:
-            result.connect(address)
-            notconnect = False
+            resultSocket.connect(address)
+            connected = True
         except Exception:
-            reconnecttime += 1
-            if reconnecttime > retryTimes:
+            reconnectedTimes += 1
+            if reconnectedTimes > retryTimes:
                 raise ValueError(f"Cannot connect to {address}.")
-    return result
+    return resultSocket

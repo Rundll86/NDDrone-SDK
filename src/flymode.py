@@ -13,7 +13,7 @@ from engine.window.monitor import MonitorWindow
 
 
 def main():
-    loggerMain.info("loading")
+    loggerMain.info("NDDrone flymode loading...")
     config = Config()
 
     # 配置一些路径常量
