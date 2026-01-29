@@ -1,7 +1,6 @@
 import os
-import time
 
-from psychopy import core, visual
+from psychopy import visual
 
 
 class MonitorWindow(visual.Window):
@@ -17,7 +16,7 @@ class MonitorWindow(visual.Window):
             size,
             monitor="testMonitor",
             units="pix",
-            fullscr=True,
+            fullscr=False,
             waitBlanking=True,
             color=(0, 0, 0),
             colorSpace="rgb255",
