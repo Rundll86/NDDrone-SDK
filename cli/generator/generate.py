@@ -99,7 +99,7 @@ def frame(index: int):
     )
     finishedCount += 1
     print(
-        f"已完成{finishedCount}/{totalCount+useBackground}(线程{createdThread}/{totalCount}个)",
+        f"已完成{finishedCount}/{totalCount + useBackground}(线程{createdThread}/{totalCount}个)",
         end="\r",
     )
     if finishedCount == totalCount + useBackground:
@@ -108,14 +108,9 @@ def frame(index: int):
 
 parser = ConfigParser()
 parser.read("config.ini")
-debug = parser.getboolean("build", "debug")
 
 inputPath = "blocks"
-outputPath = os.path.join(
-    "dist" if debug else parser["runtime"]["path"],
-    "_internal",
-    "pics2",
-)
+outputPath = "assets/frames"
 useBackground = True
 crossLength = 10
 crossWidth = 3

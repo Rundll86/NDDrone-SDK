@@ -8,7 +8,7 @@ from engine.core.configCore import Config
 from engine.thread.ReceiveMessageThread import ReceiveMessaageThread
 from engine.thread.RoboMasterThread import RoboMasterThread
 from engine.util.connection import connectSocket
-from engine.util.workdir import fromInternal
+from engine.util.workdir import fromAssets
 from engine.window.monitor import MonitorWindow
 
 
@@ -17,8 +17,8 @@ def main():
     config = Config()
 
     # 配置一些路径常量
-    picturePath = fromInternal("pics2")
-    backgroundPath = fromInternal("background.jpg")
+    picturePath = fromAssets("frames")
+    backgroundPath = fromAssets("background.jpg")
     promptPath = os.path.join(picturePath, "display_frame.png")
     # 飞控运行状态 & NeuroAI客户端
     stopFlag = False
